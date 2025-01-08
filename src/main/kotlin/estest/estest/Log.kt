@@ -11,7 +11,7 @@ import java.time.ZoneOffset
 import java.util.UUID
 
 @Document(indexName = "test-log")
-class Log (val content:String,
+class Log (var content:String,
            @Id val id: String = UUID.randomUUID().toString(),
            @Field(type = FieldType.Date, format = [DateFormat.date_time])
            val createAt:OffsetDateTime=OffsetDateTime.now(ZoneOffset.UTC)
