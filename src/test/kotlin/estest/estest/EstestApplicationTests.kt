@@ -1,10 +1,12 @@
 package estest.estest
 
 import co.elastic.clients.elasticsearch.ml.Page
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
 import kotlin.math.ln
 import kotlin.test.BeforeTest
@@ -37,20 +39,25 @@ class EstestApplicationTests {
 	}
 	@Test
 	fun readList(){
-		val logs = logRepository.findByContent("test")
+		logService.create("test")
+		logService.create("test2")
 		assertEquals(logRepository.findAll().toList().size,2)
 	}
 
 	@Test
 	fun readPage(){
+		logService.create("test")
+		logService.create("test2")
 		val page = PageRequest.of(0,10)
-		val logsPage = logRepository.findByContent(page,"test")
+		val logsPage = logRepository.findAll(page)
 		assertEquals(logsPage.totalPages,1)
 		assertEquals(logsPage.totalElements.toInt(),2)
 	}
 
 	@Test
 	fun delete(){
+		logService.create("test")
+		logService.create("test2")
 		val logs = logRepository.findAll()
 		for (log in logs){
 			logRepository.delete(log)
